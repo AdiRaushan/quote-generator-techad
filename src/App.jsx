@@ -87,7 +87,7 @@ export default function QuotationMaker() {
     company: {
       name: "TECH AD India Network Solutions",
       gst: "09AAUFTS800DZP",
-      logoUrl: "",
+      logoUrl: "https://techad.in/wp-content/uploads/2025/03/Banner-Idea--300x81.png",
       address1:
         "Head Office: 65A, 6th Floor, Devika Tower, Nehru Place, New Delhi 110019",
       address2:
