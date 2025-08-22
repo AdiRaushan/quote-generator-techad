@@ -1,0 +1,160 @@
+:root{
+  --page-w: 210mm;
+  --page-h: 297mm;
+  --pad-lr: 14mm;
+  --headerH: 44mm;
+  --footerH: 34mm;
+  --accent-blue: #0a3270;
+  --accent-red: #dc2626;
+  --border: #e6eef8;
+}
+
+html,body {
+  height:100%;
+  background: #f1f5f9;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #0f172a;
+  margin:0;
+  padding:0;
+}
+
+/* App layout (editor + preview) */
+.app { max-width: 1200px; margin: 28px auto; display: grid; grid-template-columns: 360px 1fr; gap: 18px; padding: 0 12px; }
+.editor { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 6px 20px rgba(2,6,23,0.06); }
+.preview-col { display:flex; flex-direction: column; gap: 18px; }
+.preview-scroll { max-height: calc(100vh - 120px); overflow:auto; padding-bottom: 40px; }
+
+/* PRINT PAGE container — we render one .page per A4 page */
+.page {
+  width: calc(var(--page-w));
+  height: calc(var(--page-h));
+  margin: 0 auto 18px auto;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 14px 40px rgba(2,6,23,0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Page header with graphic */
+.page-header{
+  height: var(--headerH);
+  padding: 10px var(--pad-lr);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-sizing:border-box;
+  color: #fff;
+  position:relative;
+  overflow:hidden;
+  /* background gradient + subtle stripe */
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 2px, transparent 2px, transparent 12px),
+    linear-gradient(135deg, var(--accent-blue) 0%, #0d3b8a 100%);
+}
+
+/* White diagonal on header (like your design) */
+.page-header::before{
+  content:"";
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:120px;
+  background:white;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  opacity:0.12;
+}
+
+/* Header inner frame for left+right padding */
+.print-frame { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+
+/* Page content area */
+.page-content{
+  padding: 10px calc(var(--pad-lr));
+  box-sizing:border-box;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+/* Table styles */
+.table {
+  width:100%;
+  border-collapse: collapse;
+  font-size:13px;
+}
+.table thead th {
+  background: #0b4b9b;
+  color: white;
+  padding:8px;
+  font-weight:600;
+  border:1px solid var(--border);
+  text-align:left;
+}
+.table td {
+  border:1px solid var(--border);
+  padding:8px;
+  vertical-align: top;
+  font-size:13px;
+}
+.table .right { text-align:right; }
+
+/* Small pricing box (reduced size) */
+.pricing-box {
+  width: 260px; /* smaller */
+  background:#fff;
+  border:1px solid var(--border);
+  padding:10px;
+  border-radius:8px;
+  font-size:13px;
+}
+
+/* Terms */
+.terms-box { border-left: 4px solid #16a34a; background:#ecfdf5; padding:12px; border-radius:6px; font-size:13px; }
+
+/* Page footer */
+.page-footer{
+  height: var(--footerH);
+  padding: 10px calc(var(--pad-lr));
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  color: #fff;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(90deg, #b91c1c, var(--accent-red));
+}
+.page-footer::after{
+  /* thin blue accent line mirroring header accent */
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:6px;
+  background: rgba(6,21,57,0.95);
+}
+
+/* Keep table rows intact across page breaks when printing */
+@media print {
+  /* ensure each .page prints as single page */
+  .page { page-break-after: always; break-after: page; width: auto; height: auto; box-shadow:none; border-radius:0; margin:0; }
+  body { background: white; }
+  .no-print { display: none !important; }
+  .preview-col { gap:0; }
+  .page-content { overflow: visible; padding-top: 12px; padding-bottom: 12px; }
+  thead { display: table-header-group; }
+  tfoot { display: table-footer-group; }
+  tr, td, th { break-inside: avoid; page-break-inside: avoid; }
+  .final-section { break-inside: avoid; page-break-inside: avoid; }
+  .break-before-page { break-before: page; page-break-before: always; }
+}
+
+/* simple helpers */
+.btn { background: #0b60d6; color: white; padding: 8px 12px; border-radius: 8px; font-weight:600; border: none; cursor:pointer; }
+.btn.secondary { background:#fff; color:#0f172a; border: 1px solid #e2e8f0; }
+.small { font-size:12px; color:#475569; }
+.muted { color:#64748b; }
